@@ -1,13 +1,24 @@
 # ObjectSecurityProtocol
 Application level security protocol. Provides integrity, confidentiality, and replay protection. Based on the principles of object security and perfect forward secrecy.. 
 
-## Installing
-Run 
+## Installing 
 ´´´
 pip install -r requirements.txt
 ´´´
 
-## Notes
-- Run ´´´python3 -m venv ./venv´´´ to create virutal environment.
-- Run ´´´source ./venv/bin/activate´´´ in order to start the virtual environment.
-- In order to keep track of dependencies, run ´´´pip freeze > ./requirements.txt´´´ after a package has been installed.
+## To create virutal environment run: 
+´´´
+python3 -m venv ./venv
+´´´
+## To start the virtual environment run: 
+´´´
+source ./venv/bin/activate
+´´´
+## To start the virtual environment run: 
+´´´
+source ./venv/bin/activate
+´´´
+## Run following command when ever a new package has been installed: 
+´´´
+pip freeze > ./requirements.txt
+´´´
