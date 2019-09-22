@@ -9,7 +9,7 @@ class Client:
         self.localAdress = localAdress
         self.port = port
     def run(self):
-        print("Welcome to server side!")
+        print("Welcome to client side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
         while(True):
             pass
