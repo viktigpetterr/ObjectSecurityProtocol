@@ -17,9 +17,10 @@ class Client:
 
     def listener(self):
         print("You called on the listener")
-        
+
     def sender(self):
         print("You called on the sender")
 
 client = Client(UDP_IP, UDP_PORT)
+print("test")
 client.run()
