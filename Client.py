@@ -22,5 +22,4 @@ class Client:
         print("You called on the sender")
 
 client = Client(UDP_IP, UDP_PORT)
-print("test")
 client.run()
