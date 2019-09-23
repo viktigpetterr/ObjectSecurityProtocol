@@ -18,7 +18,7 @@ class Server:
         while(True):
             data, addr = self.sock.recvfrom(1024) # buffer size is 1024 bytes
             if data is not None:
-                 print  git push --set-upstream origin ServerBranch("received message:", data)
+                 print ("received message:", data)
 
 
     def listener(self):
