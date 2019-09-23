@@ -1,7 +1,7 @@
 import socket
 
 UDP_IP = "127.0.0.1"
-UDP_PORT = 5005
+UDP_PORT = 5004
 
 class Client:
     #Constructor, we need to add self variable in constructor and methods in order to point to the object. 
@@ -9,6 +9,8 @@ class Client:
         self.localAdress = localAdress
         self.port = port
         self.UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+        # self.UDPClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.UDPClientSocket.bind((localAdress, port))
 
     def run(self):
         print("Welcome to client side!")
@@ -23,7 +25,7 @@ class Client:
 
     def send(self, data):
         # Send to server using created UDP socket
-        self.UDPClientSocket.sendto(data, UDP_PORT)
+        self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
         print("You called on the sender")
 
 if __name__ == "__main__":
