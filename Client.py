@@ -15,7 +15,7 @@ class Client:
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
         while(True):
             data = self.UDPClientSocket.recvfrom(1024)
-            if(data not null):
+            if(data is not None):
                 print("Received: " + str(data))
 
     def listener(self):
@@ -29,4 +29,4 @@ class Client:
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
     #client.run()
-    clinet.send("Hello webmaster Carl! How is it going with the server?")
+    client.send("Hello webmaster Carl! How is it going with the server?")
