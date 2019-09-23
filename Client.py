@@ -31,17 +31,16 @@ class Client:
 
     def handShake(self):
         handShake = bytes("h", "utf-8") # or c for communication
-        privateKey = number.getRandomInteger(8)
-        prime = number.getPrime(8)
-        generatorOfP = number.getRandomInteger(8)
-        publicKey = (generatorOfP ** privateKey) % prime
-        prime = bytes([prime])
-        generatorOfP = bytes([generatorOfP])
-        publicKey = bytes([publicKey])
+        privateKey = number.getRandomInteger(8*21)
+        prime = number.getPrime(8 * 21)
+        generatorOfP = number.getRandomInteger(8 * 21)
+        publicKey = pow(generatorOfP, privateKey, prime)
+        prime = prime.to_bytes(21, byteorder='big')
+        generatorOfP = generatorOfP.to_bytes(21, byteorder='big')
+        publicKey = publicKey.to_bytes(21, byteorder='big')
         data = handShake + prime + generatorOfP  + publicKey
         data += b"0" * (64 - len(data))
         self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
-        return True
 
     def sendThroughSecProtocol(self, data):
         # Send to server using created UDP socket
