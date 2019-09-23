@@ -8,6 +8,7 @@ class Client:
     def __init__(self, localAdress, port):
         self.localAdress = localAdress
         self.port = port
+        self.UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
     def run(self):
         print("Welcome to client side!")
@@ -18,9 +19,10 @@ class Client:
     def listener(self):
         print("You called on the listener")
 
-    def sender(self):
+    def send(self):
+        # Send to server using created UDP socket
+        self.UDPClientSocket.sendto("Hello Server, this UDP package reached you!", 5005)
         print("You called on the sender")
 
 client = Client(UDP_IP, UDP_PORT)
-print("test")
 client.run()
