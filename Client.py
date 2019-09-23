@@ -1,5 +1,9 @@
 import socket
 from Crypto.Cipher import AES
+<<<<<<< HEAD
+=======
+from Crypto.Util import number
+>>>>>>> origin/ClientBranch
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5004
@@ -26,6 +30,7 @@ class Client:
 
     def send(self, data):
         # Send to server using created UDP socket
+
         self.UDPClientSocket.sendto(data, (self.localAdress, 5005))
         print("You called on the sender")
 
@@ -36,9 +41,28 @@ class Client:
         ciphertext = obj.encrypt(by)
         return ciphertext
 
+    def handShake(self):
+        handShake = bytes("h", "utf-8") # or c for communication
+        privateKey = number.getRandomInteger(8)
+        prime = number.getPrime(8)
+        generatorOfP = number.getRandomInteger(8)
+        publicKey = (generatorOfP ** privateKey) % prime
+        prime = bytes([prime])
+        generatorOfP = bytes([generatorOfP])
+        publicKey = bytes([publicKey])
+        data = handShake + prime + generatorOfP  + publicKey
+        data += b"0" * (64 - len(data))
+        self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
+        return True
+
+    def sendThroughSecProtocol(self, data):
+        # Send to server using created UDP socket
+        handShake()  
+
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
     #client.run()
     message = "Hello webmaster Carl! How is it going with the server?"
     encrypted = client.encryptMessage(message)
     client.send(encrypted)
+    client.handShake()
