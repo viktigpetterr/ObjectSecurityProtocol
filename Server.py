@@ -17,9 +17,10 @@ class Server:
 
     def listener(self):
         print("You called on the listener")
-        
+
     def sender(self):
         print("You called on the sender")
-
-server = Server(UDP_IP, UDP_PORT)
-server.run()
+        
+if __name__ == "__main__":    
+    server = Server(UDP_IP, UDP_PORT)
+    server.run()

@@ -24,5 +24,6 @@ class Client:
         self.UDPClientSocket.sendto("Hello Server, this UDP package reached you!", 5005)
         print("You called on the sender")
 
-client = Client(UDP_IP, UDP_PORT)
-client.run()
+if __name__ == "__main__":
+    client = Client(UDP_IP, UDP_PORT)
+    client.run()
