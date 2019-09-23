@@ -23,7 +23,7 @@ class Client:
 
     def send(self, data):
         # Send to server using created UDP socket
-        self.UDPClientSocket.sendto(data, 5005)
+        self.UDPClientSocket.sendto(data, UDP_PORT)
         print("You called on the sender")
 
 if __name__ == "__main__":
