@@ -1,9 +1,6 @@
 import socket
 from Crypto.Cipher import AES
-<<<<<<< HEAD
-=======
 from Crypto.Util import number
->>>>>>> origin/ClientBranch
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5004
@@ -23,14 +20,13 @@ class Client:
         while(True):
             data = self.UDPClientSocket.recvfrom(1024)
             if(data is not None):
-                print("Received: " + str(data))
+                print("Received: ",data)
 
     def listener(self):
         print("You called on the listener")
 
     def send(self, data):
         # Send to server using created UDP socket
-
         self.UDPClientSocket.sendto(data, (self.localAdress, 5005))
         print("You called on the sender")
 
@@ -62,7 +58,8 @@ class Client:
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
     #client.run()
-    message = "Hello webmaster Carl! How is it going with the server?"
-    encrypted = client.encryptMessage(message)
-    client.send(encrypted)
+    #message = "Hello webmaster Carl! How is it going with the server?"
+    #encrypted = client.encryptMessage(message)
+    #client.send(encrypted)
     client.handShake()
+    client.run()
