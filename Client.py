@@ -38,7 +38,9 @@ class Client:
         prime = bytes([prime])
         generatorOfP = bytes([generatorOfP])
         publicKey = bytes([publicKey])
-        self.UDPClientSocket.sendto( prime + generatorOfP  + publicKey , (self.localAdress, 5005))
+        data = handShake + prime + generatorOfP  + publicKey
+        data += b"0" * (64 - len(data))
+        self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
         return True
 
     def sendThroughSecProtocol(self, data):
