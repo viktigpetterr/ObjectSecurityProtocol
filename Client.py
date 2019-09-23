@@ -20,14 +20,22 @@ class Client:
         while(True):
             data = self.UDPClientSocket.recvfrom(1024)
             if(data is not None):
-                print("Received: " + str(data))
+                print("Received: ",data)
 
     def listener(self):
         print("You called on the listener")
 
     def send(self, data):
         # Send to server using created UDP socket
-        self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
+        self.UDPClientSocket.sendto(data, (self.localAdress, 5005))
+        print("You called on the sender")
+
+    def encryptMessage(self, message):
+        obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+        by = bytes(message, "utf-8")
+        by += b"0" * (64 - len(by))
+        ciphertext = obj.encrypt(by)
+        return ciphertext
 
     def handShake(self):
         handShake = bytes("h", "utf-8") # or c for communication
@@ -44,8 +52,13 @@ class Client:
 
     def sendThroughSecProtocol(self, data):
         # Send to server using created UDP socket
-        handShake()       
+        handShake()  
+
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
-    #client.sendThroughSecProtocol("Hello webmaster Carl! How is it going with the server?")
+    #client.run()
+    #message = "Hello webmaster Carl! How is it going with the server?"
+    #encrypted = client.encryptMessage(message)
+    #client.send(encrypted)
     client.handShake()
+    client.run()
