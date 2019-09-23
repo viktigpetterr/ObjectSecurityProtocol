@@ -25,22 +25,26 @@ class Server:
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if data is not None:
                 print ("received message:", data)
-                if self.checkMessageType(data) == "handShake":
+                if(chr(data[0]) == "h"):
                     handShake = bytes("h", "utf-8") # or c for communication
-                    privateKey = number.getRandomInteger(8)
-                    prime = data[1]
-                    generatorOfP = data[2]
-                    publicKey = data[3]
-                    newPublicKey = (generatorOfP ** privateKey) % prime
-                    prime = bytes([prime])
-                    newPublicKey = bytes([newPublicKey])
-                    generatorOfP = bytes([generatorOfP])
+                    self.privateKey = number.getRandomInteger(8*21)
+                    prime = data[1:21]
+                    prime = int.from_bytes(prime, byteorder='big')
+                    generatorOfP = data[21 : 42]
+                    generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
+                    ClientpublicKey = data[42 : 63]
+                    ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
+                    self.secret = pow(ClientpublicKey, self.privateKey, prime)
+                    newPublicKey = pow(generatorOfP, self.privateKey, prime)
+                    prime = prime.to_bytes(21, byteorder='big')
+                    newPublicKey = newPublicKey.to_bytes(21, byteorder='big')
+                    generatorOfP = generatorOfP.to_bytes(21, byteorder='big')
                     data = handShake + prime + generatorOfP  + newPublicKey
                     data += b"0" * (64 - len(data))
                     self.UDPClientSocket.sendto( data , (self.localAdress, 5004))
+                    print(self.secret)
                 obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
                 #print ("decrypted data: ", obj2.decrypt(data))
-
 
     def listener(self):
         print("You called on the listener")
