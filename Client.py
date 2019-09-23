@@ -1,4 +1,5 @@
 import socket
+from Crypto.Cipher import AES
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5004
@@ -25,10 +26,19 @@ class Client:
 
     def send(self, data):
         # Send to server using created UDP socket
-        self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
+        self.UDPClientSocket.sendto(data, (self.localAdress, 5005))
         print("You called on the sender")
+
+    def encryptMessage(self, message):
+        obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+        by = bytes(message, "utf-8")
+        by += b"0" * (64 - len(by))
+        ciphertext = obj.encrypt(by)
+        return ciphertext
 
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
     #client.run()
-    client.send("Hello webmaster Carl! How is it going with the server?")
+    message = "Hello webmaster Carl! How is it going with the server?"
+    encrypted = client.encryptMessage(message)
+    client.send(encrypted)
