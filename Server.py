@@ -10,15 +10,15 @@ class Server:
         self.localAdress = localAdress
         self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((UDP_IP, UDP_PORT))
+        self.sock.bind((UDP_IP, UDP_PORT))
 
     def run(self):
         print("Welcome to server side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
         while(True):
-            data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+            data, addr = self.sock.recvfrom(1024) # buffer size is 1024 bytes
             if data is not None:
-                 print "received message:", data
+                 print  git push --set-upstream origin ServerBranch("received message:", data)
 
 
     def listener(self):
