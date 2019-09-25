@@ -31,10 +31,10 @@ class Client:
         print("You called on the sender")
 
     def encryptMessage(self, message):
-        obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+        aesCipher = AES.new(bytes('2555554444444444', encoding ='utf8'), AES.MODE_EAX)
         by = bytes(message, "utf-8")
         by += b"0" * (64 - len(by))
-        ciphertext = obj.encrypt(by)
+        ciphertext, tag = aesCipher.encrypt_and_digest(by)
         return ciphertext
 
     def handShake(self):
@@ -53,13 +53,13 @@ class Client:
 
     def sendThroughSecProtocol(self, data):
         # Send to server using created UDP socket
-        handShake()  
+        client.handShake()  
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     client = Client(UDP_IP, UDP_PORT)
     #client.run()
-    #message = "Hello webmaster Carl! How is it going with the server?"
-    #encrypted = client.encryptMessage(message)
+    message = "Hello webmaster Carl! How is it going with the server?"
+    encrypted = client.encryptMessage(message)
     #client.send(encrypted)
-    client.handShake()
+    client.sendThroughSecProtocol(encrypted)
     client.run()
