@@ -61,7 +61,23 @@ class Client:
         print("Sent Handshake to establish secure connection")
 
     def sendEncryptedData(self, message):
-        pass
+        communicationFlag = bytes("c", "utf-8")
+        aesCipher = AES.new(bytes('2555554444444444', encoding ='utf8'), AES.MODE_CCM)
+        nonce = aesCipher.nonce
+        nonceLength = len(nonce)
+        communicationFlagLength = len(communicationFlag)
+        #aesCipher = AES.new(bytes(self.secret, encoding ='utf8'), AES.MODE_EAX)
+        by = bytes(message, "utf-8")
+        by += b"0" * (36 - len(by))
+        #ciphertext, tag = aesCipher.encryptytes(self.secret,'utf-8'_and_digest(by)
+        aesCipher.update(communicationFlag)
+        encryption = aesCipher.encrypt(by)
+        encryptionLength = len(encryption)
+        mac = aesCipher.digest()
+        print(mac)
+        macLength = len(mac)
+        data = nonce + communicationFlag + encryption + mac
+        self.UDPClientSocket.sendto(data , (self.localAdress, 5005))
 
 if(__name__ == "__main__"):
     client = Client(UDP_IP, UDP_PORT)
