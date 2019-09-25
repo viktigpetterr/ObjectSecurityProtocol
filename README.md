@@ -3,17 +3,7 @@ Application level security proof of concept communication. Provides integrity, c
 
 ### Installing 
 ```
-pip install -r requirements.txt
-```
-### To create virutal environment run: 
-```
 python3 -m venv ./venv
-```
-### To start the virtual environment run: 
-```
 source ./venv/bin/activate
-```
-### Run following command when ever a new package has been installed: 
-```
-pip freeze > ./requirements.txt
+pip install -r requirements.txt
 ```
