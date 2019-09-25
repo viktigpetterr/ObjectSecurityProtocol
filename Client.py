@@ -19,7 +19,7 @@ class Client:
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024)
             if(data is not None):
-                print("Received data!")
+                print("Received data from:", addr)
                 if(chr(data[0]) == "h"):
                     handShake = bytes("h", "utf-8") # or c for communication
                     prime = data[1:257]

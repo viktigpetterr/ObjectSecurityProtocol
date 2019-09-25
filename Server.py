@@ -19,7 +19,7 @@ class Server:
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if(data is not None):
-                print ("Received data!")
+                print ("Received data from", addr)
                 if(chr(data[0]) == "h"):
                     self.handleHandshake(data)
                 if(chr(data[0] == "c") and (self.secret is not None)):
