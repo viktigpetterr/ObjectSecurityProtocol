@@ -23,11 +23,11 @@ class Client:
                 print("Received: " + str(data))
                 if(chr(data[0]) == "h"):
                     handShake = bytes("h", "utf-8") # or c for communication
-                    prime = data[1:21]
+                    prime = data[3:23]
                     prime = int.from_bytes(prime, byteorder='big')
-                    generatorOfP = data[21 : 42]
+                    generatorOfP = data[23 : 43]
                     generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
-                    ServerpublicKey = data[42 : 63]
+                    ServerpublicKey = data[43 : 63]
                     ServerpublicKey = int.from_bytes(ServerpublicKey, byteorder='big')
                     self.secret = pow(ServerpublicKey, self.privateKey, prime)
                     print(self.secret)
@@ -40,19 +40,19 @@ class Client:
         self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
 
     def handShake(self):
-        handShake = bytes("h", "utf-8")
-        self.privateKey = number.getRandomInteger(8*21)
-        prime = number.getPrime(8 * 21)
-        generatorOfP = number.getRandomInteger(8 * 21)
+        handShake = bytes("h01", "utf-8")
+        self.privateKey = number.getRandomInteger(80)
+        prime = number.getPrime(80)
+        generatorOfP = number.getRandomInteger(80)
         publicKey = pow(generatorOfP, self.privateKey, prime)
         print("genOfP:" + str(generatorOfP))
         print("publicKey: " + str(publicKey))
         print("prime: " + str(prime))
-        prime = prime.to_bytes(21, byteorder='big')
-        generatorOfP = generatorOfP.to_bytes(21, byteorder='big')
-        publicKey = publicKey.to_bytes(21, byteorder='big')
+        prime = prime.to_bytes(10, byteorder='big')
+        generatorOfP = generatorOfP.to_bytes(10, byteorder='big')
+        publicKey = publicKey.to_bytes(10, byteorder='big')
         data = handShake + prime + generatorOfP  + publicKey
-        data += b"0" * (64 - len(data))
+        data += b"0" * (32 - len(data))
         self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
         return
 

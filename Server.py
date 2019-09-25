@@ -26,13 +26,13 @@ class Server:
             if data is not None:
                 print ("received message:", data)
                 if(chr(data[0]) == "h"):
-                    handShake = bytes("h", "utf-8") # or c for communication
-                    self.privateKey = number.getRandomInteger(8*21)
-                    prime = data[1:21]
+                    handShake = bytes("h01", "utf-8") # or c for communication
+                    self.privateKey = number.getRandomInteger(80)
+                    prime = data[3:24]
                     prime = int.from_bytes(prime, byteorder='big')
-                    generatorOfP = data[21 : 42]
+                    generatorOfP = data[24 : 43]
                     generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
-                    ClientpublicKey = data[42 : 63]
+                    ClientpublicKey = data[43 : 64]
                     ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
                     self.secret = pow(ClientpublicKey, self.privateKey, prime)
                     newPublicKey = pow(generatorOfP, self.privateKey, prime)
