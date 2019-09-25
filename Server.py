@@ -22,7 +22,7 @@ class Server:
                 if(chr(data[0]) == "h"):
                     print ("Received handshake from", addr)
                     self.handleHandshake(data)
-                if(chr(data[0] == "c") and (self.secret is not None)):
+                if(chr(data[0]) == "c" and (self.secret is not None)):
                     print("Received data from", addr)
                     self.handleSecureIncommingData(data)
                 #print ("decrypted data: ", obj2.decrypt(data))
@@ -52,20 +52,20 @@ class Server:
     def handleSecureIncommingData(self, data):
         communicationFlag = data[0].to_bytes(1,byteorder="big")
         nonce = data [1:12]
-        ciphertext = data [12:48]
-        mac = data [48:64]
-        print(mac)
+        ciphertext = data [12:46]
+        mac = data [46:62]
+        messageLength = data [62:64]
         aesCipher = AES.new(bytes(self.secret,'utf-8'), AES.MODE_CCM, nonce)
         aesCipher.update(communicationFlag)
         #cipher = AES.new(self.secret, AES.MODE_EAX, nonce)s
         secretMessage = aesCipher.decrypt(ciphertext)
-        
+        secretMessageConcat = secretMessage[0:int.from_bytes(messageLength, byteorder = 'big')]
         try: 
             aesCipher.verify(mac)
-            data = secretMessage.decode("utf-8")
-            print("Obained following secret message", data)
+            data = secretMessageConcat.decode("utf-8")
+            print("Success! Secret message: ", data)
         except ValueError:
-            print ("Key incorrect or message corrupted")
+            print ("Error: Either Key is not correct or message the message is corrupted")
         
 if __name__ == "__main__":    
     server = Server(UDP_IP, UDP_PORT)
