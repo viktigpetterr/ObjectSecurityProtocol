@@ -1,1 +1,2 @@
 pipdeptree==0.13.2
+pycrypto==2.6.1
