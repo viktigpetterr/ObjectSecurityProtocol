@@ -24,7 +24,7 @@ class Server:
                     self.handleHandshake(data)
                 if(chr(data[0] == "c") and (self.secret is not None)):
                 print ("Received data from", addr)
-                    self.handleSecureIncommingData(data)
+                self.handleSecureIncommingData(data)
                 obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
                 #print ("decrypted data: ", obj2.decrypt(data))
 
@@ -42,7 +42,6 @@ class Server:
         secret = secret.to_bytes(256, "big")
         subSecret = secret[0:16]
         self.secret = int.from_bytes(subSecret, "big")
-        secretKeyLen = len(str(self.secret))
         newPublicKey = pow(generatorOfP, self.privateKey, prime)
         prime = prime.to_bytes(256, byteorder='big')
         generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
