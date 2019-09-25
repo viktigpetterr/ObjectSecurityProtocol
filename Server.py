@@ -24,26 +24,28 @@ class Server:
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if data is not None:
-                print ("received message:", data)
+                print ("Received data!")
                 if(chr(data[0]) == "h"):
-                    handShake = bytes("h01", "utf-8") # or c for communication
-                    self.privateKey = number.getRandomInteger(2048)
-                    prime = data[1:128]
+                    handShake = bytes("h", "utf-8") # or c for communication
+                    self.privateKey = number.getRandomInteger(224)
+                    prime = data[1:257]
                     prime = int.from_bytes(prime, byteorder='big')
-                    generatorOfP = data[128 : 256]
+                    generatorOfP = data[257 : 285]
                     generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
-                    ClientpublicKey = data[256 : 384]
+                    ClientpublicKey = data[285 : 541]
                     ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
+
                     self.secret = pow(ClientpublicKey, self.privateKey, prime)
+                    
                     newPublicKey = pow(generatorOfP, self.privateKey, prime)
-                    prime = prime.to_bytes(128, byteorder='big')
-                    newPublicKey = newPublicKey.to_bytes(128, byteorder='big')
-                    generatorOfP = generatorOfP.to_bytes(128, byteorder='big')
+                    prime = prime.to_bytes(256, byteorder='big')
+                    generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
+                    newPublicKey = newPublicKey.to_bytes(256, byteorder='big')
+
                     data = handShake + prime + generatorOfP  + newPublicKey
                     #first byte is header, the rest is keys. 
-                    data += b"0" * (385 - len(data))
                     self.UDPClientSocket.sendto( data , (self.localAdress, 5004))
-                    print(self.secret)
+                    print("Secret:", self.secret)
                 obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
                 #print ("decrypted data: ", obj2.decrypt(data))
 
