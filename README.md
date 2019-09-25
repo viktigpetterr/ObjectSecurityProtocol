@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ### Start
 Open two terminals
 
-#### terminal 1
+#### Terminal 1
 ```
 source ./venv/bin/activate
 ```
