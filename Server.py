@@ -4,7 +4,6 @@ from Crypto.Util import number
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5005
-MESSAGE = "Hello World!"
 
 class Server:
     #Constructor, we need to add self variable in constructor and methods in order to point to the object. 
@@ -19,7 +18,7 @@ class Server:
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
-            if data is not None:
+            if(data is not None):
                 print ("Received data!")
                 if(chr(data[0]) == "h"):
                     self.handleHandshake(data)

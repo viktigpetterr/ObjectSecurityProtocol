@@ -1,5 +1,5 @@
 # ObjectSecurityProtocol
-Application level security proof of concept protocol. Provides integrity, confidentiality, and replay protection. Based on the principles of object security and perfect forward secrecy.
+Application level security proof of concept communication. Provides integrity, confidentiality, and replay protection. Based on the principles of object security and perfect forward secrecy.
 
 ### Installing 
 ```
