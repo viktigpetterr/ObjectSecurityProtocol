@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ```
 
 ### Start
-Open two terminals
+Open two terminals and navigate to the repository directory
 
 #### Terminal 1
 ```
@@ -29,3 +29,5 @@ source ./venv/bin/activate
 ```
 python3 Client.py
 ```
+
+Send encrypted Iot data! :) 
