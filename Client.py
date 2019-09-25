@@ -11,7 +11,6 @@ class Client:
         self.localAdress = localAdress
         self.port = port
         self.UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-        # self.UDPClientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.UDPClientSocket.bind((localAdress, port))
 
     def run(self):
@@ -31,11 +30,10 @@ class Client:
                     serverPublicKey = int.from_bytes(serverPublicKey, byteorder='big')
                     self.secret = pow(serverPublicKey, self.privateKey, prime)
                     print("Secret:", self.secret)
-
-    def send(self, data):
-        # Send to server using created UDP socket
-        self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
-
+                    #Time to send data securily.
+                    self.sendEncryptedData(message) # @TODO create logic for entering message in terminal. 
+                if(chr(data[0] == "c") and (self.secret is not None)):
+            
     def handShake(self):
         handShake = bytes("h", "utf-8")
 
@@ -51,7 +49,10 @@ class Client:
         data = handShake + prime + generatorOfP  + publicKey # 1 + 256 + 28 + 256 bytes
         
         self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
-      
+
+    def sendEncryptedData(self, message):
+
+
 if __name__ == "__main__":
     client = Client(UDP_IP, UDP_PORT)
     #client.sendThroughSecProtocol("Hello webmaster Carl! How is it going with the server?")

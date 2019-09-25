@@ -14,10 +14,6 @@ class Server:
         self.UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
         self.UDPClientSocket.bind((localAdress, port))
 
-    def checkMessageType(self, data):
-        if(str(chr(data[0]))=="h"):
-            return "handShake"
-
     def run(self):
         print("Welcome to server side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
@@ -26,36 +22,37 @@ class Server:
             if data is not None:
                 print ("Received data!")
                 if(chr(data[0]) == "h"):
-                    handShake = bytes("h", "utf-8") # or c for communication
-                    self.privateKey = number.getRandomInteger(224)
-                    prime = data[1:257]
-                    prime = int.from_bytes(prime, byteorder='big')
-                    generatorOfP = data[257 : 285]
-                    generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
-                    ClientpublicKey = data[285 : 541]
-                    ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
-
-                    self.secret = pow(ClientpublicKey, self.privateKey, prime)
-                    
-                    newPublicKey = pow(generatorOfP, self.privateKey, prime)
-                    prime = prime.to_bytes(256, byteorder='big')
-                    generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
-                    newPublicKey = newPublicKey.to_bytes(256, byteorder='big')
-
-                    data = handShake + prime + generatorOfP  + newPublicKey
-                    #first byte is header, the rest is keys. 
-                    self.UDPClientSocket.sendto( data , (self.localAdress, 5004))
-                    print("Secret:", self.secret)
+                    self.handleHandshake(data)
+                if(chr(data[0] == "c") and (self.secret is not None)):
+                    self.handleSecureIncommingData(data)
                 obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
                 #print ("decrypted data: ", obj2.decrypt(data))
 
-    def listener(self):
-        print("You called on the listener")
+    def handleHandshake(self, data):
+        handShake = bytes("h", "utf-8") # or c for communication
+        self.privateKey = number.getRandomInteger(224)
+        prime = data[1:257]
+        prime = int.from_bytes(prime, byteorder='big')
+        generatorOfP = data[257 : 285]
+        generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
+        ClientpublicKey = data[285 : 541]
+        ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
 
-    def sender(self):
-        print("You called on the sender")
-        self.UDPClientSocket.sendto(MESSAGE, (UDP_IP, UDP_PORT))
-        UDPClientSocket.sendto(MESSAGE, (UDP_IP, UDP_PORT))
+        self.secret = pow(ClientpublicKey, self.privateKey, prime)
+        
+        newPublicKey = pow(generatorOfP, self.privateKey, prime)
+        prime = prime.to_bytes(256, byteorder='big')
+        generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
+        newPublicKey = newPublicKey.to_bytes(256, byteorder='big')
+
+        data = handShake + prime + generatorOfP  + newPublicKey
+        #first byte is header, the rest is keys. 
+        self.UDPClientSocket.sendto( data , (self.localAdress, 5004))
+        print("Secret:", self.secret)
+
+    def handleSecureIncommingData(self, data):
+        data = string.from_bytes(data, "big")
+        print("Obained following secret message", data)
         
 if __name__ == "__main__":    
     server = Server(UDP_IP, UDP_PORT)
