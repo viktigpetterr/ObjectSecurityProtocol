@@ -4,6 +4,10 @@ Application level security proof of concept communication. Provides integrity, c
 ### Installing 
 ```
 python3 -m venv ./venv
+```
+```
 source ./venv/bin/activate
+```
+```
 pip install -r requirements.txt
 ```
