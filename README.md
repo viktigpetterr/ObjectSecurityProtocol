@@ -29,5 +29,3 @@ source ./venv/bin/activate
 ```
 python3 Client.py
 ```
-
-Send encrypted Iot data! :) 
