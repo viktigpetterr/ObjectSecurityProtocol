@@ -19,10 +19,11 @@ class Server:
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if(data is not None):
-                print ("Received data from", addr)
                 if(chr(data[0]) == "h"):
+                    print ("Received handshake from", addr)
                     self.handleHandshake(data)
                 if(chr(data[0] == "c") and (self.secret is not None)):
+                print ("Received data from", addr)
                     self.handleSecureIncommingData(data)
                 obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
                 #print ("decrypted data: ", obj2.decrypt(data))
