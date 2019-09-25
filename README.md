@@ -11,3 +11,11 @@ source ./venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+### Start
+```
+python3 Server.py
+```
+```
+python3 Client.py
+```
