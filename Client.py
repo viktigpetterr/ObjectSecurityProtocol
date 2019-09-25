@@ -33,6 +33,7 @@ class Client:
                     #Time to send data securily.
                     self.sendEncryptedData(message) # @TODO create logic for entering message in terminal. 
                 if(chr(data[0] == "c") and (self.secret is not None)):
+                    pass
             
     def handShake(self):
         handShake = bytes("h", "utf-8")
