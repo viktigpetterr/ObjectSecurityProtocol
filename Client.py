@@ -28,7 +28,10 @@ class Client:
                     generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
                     serverPublicKey = data[285 : 541]
                     serverPublicKey = int.from_bytes(serverPublicKey, byteorder='big')
-                    self.secret = pow(serverPublicKey, self.privateKey, prime)
+                    secret = pow(ClientpublicKey, self.privateKey, prime)
+                    secret = secret.to_bytes(256, "big")
+                    subSecret = secret[0:16]
+                    self.secret = int.from_bytes(subSecret, "big")
                     print("Secret:", self.secret)
                     #Time to send data securily.
                     self.sendEncryptedData(message) # @TODO create logic for entering message in terminal. 
@@ -52,9 +55,9 @@ class Client:
         self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
 
     def sendEncryptedData(self, message):
+        pass
 
-
-if __name__ == "__main__":
+if(__name__ == "__main__"):
     client = Client(UDP_IP, UDP_PORT)
     #client.sendThroughSecProtocol("Hello webmaster Carl! How is it going with the server?")
     client.handShake()

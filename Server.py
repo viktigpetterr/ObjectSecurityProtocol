@@ -37,8 +37,11 @@ class Server:
         ClientpublicKey = data[285 : 541]
         ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
 
-        self.secret = pow(ClientpublicKey, self.privateKey, prime)
-        
+        secret = pow(ClientpublicKey, self.privateKey, prime)
+        secret = secret.to_bytes(256, "big")
+        subSecret = secret[0:16]
+        self.secret = int.from_bytes(subSecret, "big")
+        secretKeyLen = len(str(self.secret))
         newPublicKey = pow(generatorOfP, self.privateKey, prime)
         prime = prime.to_bytes(256, byteorder='big')
         generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
@@ -50,7 +53,6 @@ class Server:
         print("Secret:", self.secret)
 
     def handleSecureIncommingData(self, data):
-        data = string.from_bytes(data, "big")
         print("Obained following secret message", data)
         
 if __name__ == "__main__":    
