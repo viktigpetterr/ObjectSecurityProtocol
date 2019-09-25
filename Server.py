@@ -19,10 +19,11 @@ class Server:
         while(True):
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if(data is not None):
-                print ("Received data from", addr)
                 if(chr(data[0]) == "h"):
+                    print ("Received handshake from", addr)
                     self.handleHandshake(data)
                 if(chr(data[0] == "c") and (self.secret is not None)):
+                    print ("Received data from", addr)
                     self.handleSecureIncommingData(data)
                 #print ("decrypted data: ", obj2.decrypt(data))
 
@@ -36,8 +37,11 @@ class Server:
         ClientpublicKey = data[285 : 541]
         ClientpublicKey = int.from_bytes(ClientpublicKey, byteorder='big')
 
-        self.secret = pow(ClientpublicKey, self.privateKey, prime)
-        
+        secret = pow(ClientpublicKey, self.privateKey, prime)
+        secret = secret.to_bytes(256, "big")
+        subSecret = secret[0:16]
+        self.secret = int.from_bytes(subSecret, "big")
+        secretKeyLen = len(str(self.secret))
         newPublicKey = pow(generatorOfP, self.privateKey, prime)
         prime = prime.to_bytes(256, byteorder='big')
         generatorOfP = generatorOfP.to_bytes(28, byteorder='big')
@@ -49,13 +53,14 @@ class Server:
         print("Secret:", self.secret)
 
     def handleSecureIncommingData(self, data):
-        nonce = data [1:12]
         communicationFlag = data[0]
+        nonce = data [1:12]
         ciphertext = data [12:48]
         mac = data [48:64]
+        secretLength = len(bytes(str(self.secret),'utf-8'))
         aesCipher = AES.new(str(self.secret), AES.MODE_CCM, nonce)
         aesCipher.update(communicationFlag)
-        #cipher = AES.new(self.secret, AES.MODE_EAX, nonce)
+        #cipher = AES.new(self.secret, AES.MODE_EAX, nonce)s
         secretMessage = aesCipher.decrypt(ciphertext)
         
         try: 
