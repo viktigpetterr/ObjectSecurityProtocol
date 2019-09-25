@@ -40,19 +40,20 @@ class Client:
         self.UDPClientSocket.sendto(bytes(data, "utf-8"), (self.localAdress, 5005))
 
     def handShake(self):
-        handShake = bytes("h01", "utf-8")
-        self.privateKey = number.getRandomInteger(80)
-        prime = number.getPrime(80)
-        generatorOfP = number.getRandomInteger(80)
+        handShake = bytes("h", "utf-8")
+        self.privateKey = number.getRandomInteger(2048)
+        prime = number.getPrime(2048)
+        generatorOfP = number.getRandomInteger(2048)
         publicKey = pow(generatorOfP, self.privateKey, prime)
         print("genOfP:" + str(generatorOfP))
         print("publicKey: " + str(publicKey))
         print("prime: " + str(prime))
-        prime = prime.to_bytes(10, byteorder='big')
-        generatorOfP = generatorOfP.to_bytes(10, byteorder='big')
-        publicKey = publicKey.to_bytes(10, byteorder='big')
+        prime = prime.to_bytes(128, byteorder='big')
+        generatorOfP = generatorOfP.to_bytes(128, byteorder='big')
+        publicKey = publicKey.to_bytes(128, byteorder='big')
         data = handShake + prime + generatorOfP  + publicKey
-        data += b"0" * (32 - len(data))
+        # First byte is header, the rest are keys. 
+        data += b"0" * (385 - len(data))
         self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
         return
 
