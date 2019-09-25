@@ -32,7 +32,7 @@ class Client:
                         generatorOfP = int.from_bytes(generatorOfP, byteorder='big')
                         serverPublicKey = data[285 : 541]
                         serverPublicKey = int.from_bytes(serverPublicKey, byteorder='big')
-                        secret = pow(ClientpublicKey, self.privateKey, prime)
+                        secret = pow(serverPublicKey, self.privateKey, prime)
                         self.secret = str(secret)[0:32]
                         print("Secret:", self.secret)
                         #Time to send data securily.
