@@ -13,8 +13,18 @@ pip install -r requirements.txt
 ```
 
 ### Start
+Open two terminals
+
+#### terminal 1
+```
+source ./venv/bin/activate
+```
 ```
 python3 Server.py
+```
+#### Terminal 2
+```
+source ./venv/bin/activate
 ```
 ```
 python3 Client.py
