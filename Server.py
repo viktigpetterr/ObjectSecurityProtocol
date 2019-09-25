@@ -22,10 +22,11 @@ class Server:
                 if(chr(data[0]) == "h"):
                     print ("Received handshake from", addr)
                     self.handleHandshake(data)
-                if(chr(data[0]) == "c" and (self.secret is not None)):
+                    handShakeDone = True;
+                if(chr(data[0]) == "c" and (self.secret is not None) and handShakeDone):
                     print("Received data from", addr)
                     self.handleSecureIncommingData(data)
-                #print ("decrypted data: ", obj2.decrypt(data))
+                    handShakeDone = False;
 
     def handleHandshake(self, data):
         handShake = bytes("h", "utf-8") # or c for communication
@@ -57,7 +58,6 @@ class Server:
         messageLength = data [62:64]
         aesCipher = AES.new(bytes(self.secret,'utf-8'), AES.MODE_CCM, nonce)
         aesCipher.update(communicationFlag)
-        #cipher = AES.new(self.secret, AES.MODE_EAX, nonce)s
         secretMessage = aesCipher.decrypt(ciphertext)
         secretMessageConcat = secretMessage[0:int.from_bytes(messageLength, byteorder = 'big')]
         try: 

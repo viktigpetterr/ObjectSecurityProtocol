@@ -17,7 +17,7 @@ class Client:
         print("Welcome to client side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
         while(True):
-            message = input("Message to server: ")
+            message = input("Message to server (max 34 characters): ")
             dataHasBeenSent = False
             client.handShake()
             while(dataHasBeenSent is not True):
@@ -36,13 +36,12 @@ class Client:
                         self.secret = str(secret)[0:32]
                         print("Secret:", self.secret)
                         #Time to send data securily.
-                        self.sendEncryptedData(message) # @TODO create logic for entering message in terminal.
+                        self.sendEncryptedData(message)
                         print("Data sent to server")
                         dataHasBeenSent = True
                     if(chr(data[0] == "c") and (self.secret is not None)):
                         print("Data retrived from:", addr)
 
-            
     def handShake(self):
         handShake = bytes("h", "utf-8")
 
