@@ -39,7 +39,7 @@ class Client:
                         self.sendEncryptedData(message)
                         print("Data sent to server")
                         dataHasBeenSent = True
-                    if(chr(data[0] == "c") and (self.secret is not None)):
+                    if(chr(data[0]) == "c" and (self.secret is not None)):
                         print("Data retrived from:", addr)
 
     def handShake(self):
