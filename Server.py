@@ -16,17 +16,17 @@ class Server:
     def run(self):
         print("Welcome to server side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
-        while(True):
+        while True:
             data, addr = self.UDPClientSocket.recvfrom(1024) # buffer size is 1024 bytes
             if(data is not None):
                 if(chr(data[0]) == "h"):
                     print ("Received handshake from", addr)
                     self.handleHandshake(data)
-                    handShakeDone = True;
+                    handShakeDone = True
                 if(chr(data[0]) == "c" and (self.secret is not None) and handShakeDone):
                     print("Received data from", addr)
                     self.handleSecureIncommingData(data)
-                    handShakeDone = False;
+                    handShakeDone = False
 
     def handleHandshake(self, data):
         handShake = bytes("h", "utf-8") # or c for communication
