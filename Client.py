@@ -16,11 +16,11 @@ class Client:
     def run(self):
         print("Welcome to client side!")
         print("Instance is running on: " + str(self.localAdress) + ":" + str(self.port))
-        while(True):
+        while True:
             message = input("Message to server (max 34 characters): ")
             dataHasBeenSent = False
             client.handShake()
-            while(dataHasBeenSent is not True):
+            while dataHasBeenSent is not True:
                 data, addr = self.UDPClientSocket.recvfrom(1024)
                 if(data is not None):
                     if(chr(data[0]) == "h"):
@@ -44,7 +44,6 @@ class Client:
 
     def handShake(self):
         handShake = bytes("h", "utf-8")
-
         self.privateKey = number.getRandomNBitInteger(224)
         prime = number.getPrime(2048)
         generatorOfP = number.getRandomNBitInteger(224)
@@ -56,7 +55,7 @@ class Client:
 
         data = handShake + prime + generatorOfP  + publicKey # 1 + 256 + 28 + 256 bytes
         
-        self.UDPClientSocket.sendto( data , (self.localAdress, 5005))
+        self.UDPClientSocket.sendto(data , (self.localAdress, 5005))
         print("Sent Handshake to establish secure connection")
 
     def sendEncryptedData(self, message):
