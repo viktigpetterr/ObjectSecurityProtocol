@@ -1,7 +1,6 @@
 # ObjectSecurityProtocol
 Application level security proof of concept communication. Provides integrity, confidentiality, and replay protection. Based on the principles of object security and perfect forward secrecy.
 
-#### Third pary dependencies are found in requirements.txt
 ### Installing 
 ```
 python3 -m venv ./venv
